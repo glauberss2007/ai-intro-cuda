@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 
-// function to add the elements of two arrays
+// Função para somar os elementos de dois arrays
 void add(int n, float *x, float *y)
 {
   for (int i = 0; i < n; i++)
@@ -10,27 +10,28 @@ void add(int n, float *x, float *y)
 
 int main(void)
 {
-  int N = 1<<20; // 1M elements
+  int N = 1<<20; // 1M elementos (2^20 = 1.048.576)
 
+  // Alocação dinâmica de memória para os arrays x e y
   float *x = new float[N];
   float *y = new float[N];
 
-  // initialize x and y arrays on the host
+  // Inicialização dos arrays x e y no host (CPU)
   for (int i = 0; i < N; i++) {
     x[i] = 1.0f;
     y[i] = 2.0f;
   }
 
-  // Run kernel on 1M elements on the CPU
+  // Executa a função de adição para 1M elementos na CPU
   add(N, x, y);
 
-  // Check for errors (all values should be 3.0f)
+  // Verifica erros (todos os valores devem ser 3.0f)
   float maxError = 0.0f;
   for (int i = 0; i < N; i++)
     maxError = fmax(maxError, fabs(y[i]-3.0f));
-  std::cout << "Max error: " << maxError << std::endl;
+  std::cout << "Erro máximo: " << maxError << std::endl;
 
-  // Free memory
+  // Libera a memória alocada
   delete [] x;
   delete [] y;
 
